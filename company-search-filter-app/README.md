@@ -42,8 +42,10 @@ Once the dev server is running, press the corresponding key in the terminal:
 ### Running Tests
 
 ```bash
-npx jest --runInBand
+npm test
 ```
+
+Tests cover all four pure logic modules — 57 tests across `queryParser`, `searchEngine`, `filterEngine`, and `sortEngine`.
 
 ### Linting
 
@@ -176,6 +178,12 @@ When `revenueMin > revenueMax` (or the equivalent for `foundedYear`), `filterEng
 
 ## Bonus Features
 
+**Active filter count badge**
+The "Filters" button shows a blue badge with the number of active filter dimensions (e.g., "Filters ▼ 2"). The button also changes colour when any filter is active, giving clear visual feedback even when the panel is closed.
+
+**Search result count**
+A result count line appears above the company list — "25 companies" by default, switching to "3 results found" when a search or filter is active.
+
 **Advanced search syntax**
 The search bar accepts structured tokens alongside plain text:
 
@@ -217,3 +225,18 @@ The dataset (`src/data/dataset.ts`) contains 25 companies spanning 9 industries 
 - `prefer-const` enforced as error, `no-console` as warning
 
 Config file: `eslint.config.js` (ESLint v9 flat config format).
+
+---
+
+## Unit Tests
+
+57 unit tests across 4 test suites covering all pure logic modules:
+
+| Suite                  | Coverage                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| `queryParser.test.ts`  | Free text, field filters, numeric comparisons, space-tolerant syntax, round-trip |
+| `searchEngine.test.ts` | Short-circuit, partial match, field filter, numeric comparison, AND conjunction  |
+| `filterEngine.test.ts` | Each filter dimension, range bounds, invalid range ignore, AND conjunction       |
+| `sortEngine.test.ts`   | Null sort, immutability, numeric/string/enum sort, asc/desc, negative values     |
+
+Run with: `npm test`
