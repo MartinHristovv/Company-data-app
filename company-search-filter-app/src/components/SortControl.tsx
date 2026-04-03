@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useAppContext } from "../state/AppContext";
-import { SortField, SortDirection } from "../state/types";
+import { SortField } from "../state/types";
 
 const SORT_FIELDS: SortField[] = [
   "name",
@@ -32,11 +32,19 @@ export function SortControl() {
   const { sortField, sortDirection } = state;
 
   function handleChipPress(field: SortField) {
-    let newDirection: SortDirection = "asc";
-    if (field === sortField) {
-      newDirection = sortDirection === "asc" ? "desc" : "asc";
+    if (field !== sortField) {
+      // New field — start at asc
+      dispatch({ type: "SET_SORT", payload: { field, direction: "asc" } });
+    } else if (sortDirection === "asc") {
+      // Second tap — switch to desc
+      dispatch({ type: "SET_SORT", payload: { field, direction: "desc" } });
+    } else {
+      // Third tap — clear sort entirely
+      dispatch({
+        type: "SET_SORT",
+        payload: { field: null, direction: "asc" },
+      });
     }
-    dispatch({ type: "SET_SORT", payload: { field, direction: newDirection } });
   }
 
   return (
