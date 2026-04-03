@@ -62,3 +62,14 @@ export type AppAction =
   | { type: 'SET_FILTER'; payload: Partial<FilterState> }
   | { type: 'CLEAR_FILTERS' }
   | { type: 'SET_SORT'; payload: { field: SortField; direction: SortDirection } };
+
+/** Returns the number of active filter dimensions (for badge display). */
+export function countActiveFilters(filters: FilterState): number {
+  let count = 0;
+  if (filters.industries.length > 0) count++;
+  if (filters.companyTypes.length > 0) count++;
+  if (filters.sizes.length > 0) count++;
+  if (filters.revenueMin !== null || filters.revenueMax !== null) count++;
+  if (filters.foundedYearMin !== null || filters.foundedYearMax !== null) count++;
+  return count;
+}

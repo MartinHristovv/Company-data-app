@@ -18,7 +18,8 @@ if (Platform.OS === "android") {
 
 export function ResultList() {
   const { state } = useAppContext();
-  const { results } = state;
+  const { results, searchQuery } = state;
+  const isSearching = searchQuery.trim().length > 0;
 
   useEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -38,13 +39,22 @@ export function ResultList() {
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <CompanyCard company={item} />}
       contentContainerStyle={styles.list}
+      ListHeaderComponent={
+        <View style={styles.countBar}>
+          <Text style={styles.countText}>
+            {isSearching
+              ? `${results.length} result${results.length === 1 ? "" : "s"} found`
+              : `${results.length} ${results.length === 1 ? "company" : "companies"}`}
+          </Text>
+        </View>
+      }
     />
   );
 }
 
 const styles = StyleSheet.create({
   list: {
-    paddingVertical: 8,
+    paddingBottom: 16,
   },
   emptyContainer: {
     flex: 1,
@@ -54,6 +64,14 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
+    color: "#888",
+  },
+  countBar: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  countText: {
+    fontSize: 12,
     color: "#888",
   },
 });

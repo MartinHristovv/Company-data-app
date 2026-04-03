@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { AppProvider } from "./src/state/AppContext";
+import { useAppContext } from "./src/state/AppContext";
+import { countActiveFilters } from "./src/state/types";
 import { SearchBar } from "./src/components/SearchBar";
 import { SortControl } from "./src/components/SortControl";
 import { FilterToggleButton } from "./src/components/FilterToggleButton";
@@ -9,6 +11,8 @@ import { ResultList } from "./src/components/ResultList";
 
 function AppContent() {
   const [filterVisible, setFilterVisible] = useState(false);
+  const { state } = useAppContext();
+  const activeFilterCount = countActiveFilters(state.filters);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -18,6 +22,7 @@ function AppContent() {
         <FilterToggleButton
           isVisible={filterVisible}
           onToggle={() => setFilterVisible((v) => !v)}
+          activeFilterCount={activeFilterCount}
         />
         <FilterPanel isVisible={filterVisible} />
       </View>
